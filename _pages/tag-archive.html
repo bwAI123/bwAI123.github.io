@@ -10,8 +10,26 @@ author_profile: true
 
 {% for tag in group_names %}
   {% assign posts = group_items[forloop.index0] %}
-  <h2 id="{{ tag | slugify }}" class="archive__subtitle">{{ tag }}</h2>
-  {% for post in posts %}
-    {% include archive-single.html %}
-  {% endfor %}
+  <div class="tag-section" data-tag="{{ tag | slugify }}">
+    <h2 id="{{ tag | slugify }}" class="archive__subtitle">{{ tag }}</h2>
+    {% for post in posts %}
+      {% include archive-single.html %}
+    {% endfor %}
+  </div>
 {% endfor %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var hash = window.location.hash;
+    if (hash) {
+      var target = hash.substring(1);
+      document.querySelectorAll('.tag-section').forEach(function(section) {
+        if (section.dataset.tag !== target) {
+          section.style.display = 'none';
+        }
+      });
+      var el = document.getElementById(target);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>
